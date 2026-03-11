@@ -9,8 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        bg: "var(--bg)",
+        surface: "var(--surface)",
+        surface2: "var(--surface-2)",
+        accent: "var(--accent)",
+        textPrimary: "var(--text)",
+        textMuted: "var(--text-muted)",
+        border: "var(--border)",
+        rating: "var(--rating)",
+      },
+      fontFamily: {
+        sans: ["var(--font-dm-sans)"],
+        serif: ["var(--font-playfair)"],
+        mono: ["var(--font-jetbrains)"],
       },
     },
   },

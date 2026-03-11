@@ -179,3 +179,30 @@ export async function getMultipleAlbums(ids: string[], accessToken: string): Pro
         return results; // Return whatever partial data we managed to grab
     }
 }
+
+/**
+ * Gets a generic App token using Client Credentials to view public albums
+ * when a user is not logged in.
+ */
+export async function getAppAccessToken(): Promise<string | null> {
+    const clientId = process.env.SPOTIFY_CLIENT_ID;
+    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+    if (!clientId || !clientSecret) return null;
+
+    try {
+        const res = await fetch("https://accounts.spotify.com/api/token", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: "Basic " + Buffer.from(`${clientId}:${clientSecret}`).toString("base64"),
+            },
+            body: new URLSearchParams({ grant_type: "client_credentials" }),
+            next: { revalidate: 3500 }, // Cache the token for just under 1 hour
+        });
+        const data = await res.json();
+        return data.access_token;
+    } catch (error) {
+        console.error("Error fetching Spotify App token", error);
+        return null;
+    }
+}
